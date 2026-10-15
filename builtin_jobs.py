@@ -51,7 +51,7 @@ from bs4 import BeautifulSoup
 
 UA = "Mozilla/5.0 (personal-job-search; contact: mike) BuiltInJobs/2.0"
 HEADERS = {"User-Agent": UA, "Accept": "text/html"}
-DEFAULT_DELAY = 2.0
+DEFAULT_DELAY = 4.0
 TIMEOUT = 20
 DEFAULT_TITLE_INCLUDE = ["scientist", "director"]
 
@@ -191,12 +191,32 @@ def load_focus(config_path: str) -> dict:
     return {area: [k.lower() for k in kws] for area, kws in focus.items()}
 
 
-def fetch_detail(url: str, session):
-    try:
-        r = session.get(url, headers=HEADERS, timeout=TIMEOUT)
-        r.raise_for_status()
-    except requests.RequestException as e:
-        print(f"  detail fetch failed {url}: {e}", file=sys.stderr)
+def fetch_detail(url: str, session, max_retries: int = 4):
+    """Fetch a detail page, backing off and retrying on 429 (rate limit)."""
+    r = None
+    for attempt in range(max_retries + 1):
+        try:
+            r = session.get(url, headers=HEADERS, timeout=TIMEOUT)
+            if r.status_code == 429:
+                # honor Retry-After if present, else exponential backoff
+                wait = int(r.headers.get("Retry-After", 0)) or min(60, 5 * 2 ** attempt)
+                if attempt < max_retries:
+                    print(f"  429 rate-limited; waiting {wait}s (attempt {attempt+1}/{max_retries})",
+                          file=sys.stderr)
+                    time.sleep(wait)
+                    continue
+            r.raise_for_status()
+            break
+        except requests.RequestException as e:
+            if attempt < max_retries:
+                wait = min(60, 5 * 2 ** attempt)
+                print(f"  fetch error ({e}); retry in {wait}s", file=sys.stderr)
+                time.sleep(wait)
+                continue
+            print(f"  detail fetch failed {url}: {e}", file=sys.stderr)
+            return "", ""
+    if r is None or r.status_code != 200:
+        print(f"  detail fetch gave up {url}", file=sys.stderr)
         return "", ""
     soup = BeautifulSoup(r.text, "html.parser")
     apply_url = ""
