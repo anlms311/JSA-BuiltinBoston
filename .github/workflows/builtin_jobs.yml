@@ -1,0 +1,53 @@
+name: Built In Job Scraper
+
+on:
+  schedule:
+    - cron: '30 11 * * *'   # 7:30 AM US Eastern (winter) / 6:30 AM (summer)
+  workflow_dispatch:          # lets you run it manually from the Actions tab
+
+# Allow the job to commit the updated seen-file back to the repo
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run scraper + email new hits
+        env:
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: |
+          python builtin_jobs.py \
+            --url "https://www.builtinboston.com/jobs/biotech/pharmaceutical?search=director&city=Boston&state=Massachusetts&country=USA&allLocations=true" \
+            --pages auto \
+            --config company_config.yaml \
+            --focus-only \
+            --seen-file jobs_seen.json \
+            --out new_jobs.json --csv new_jobs.csv \
+            --archive jobs_archive.csv \
+            --email-from "${{ secrets.GMAIL_ADDRESS }}" \
+            --email-to   "${{ secrets.GMAIL_ADDRESS }}"
+
+      - name: Commit updated seen-file
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name  "github-actions[bot]"
+          git add jobs_seen.json jobs_archive.csv
+          git diff --staged --quiet || (
+            git commit -m "chore: update job seen-file + archive [skip ci]" &&
+            git pull --rebase origin main &&
+            git push
+          )
