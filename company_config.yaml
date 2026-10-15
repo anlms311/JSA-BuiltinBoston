@@ -1,0 +1,246 @@
+# ════════════════════════════════════════════════════════════════════════════
+#  New-Company Detector — Configuration
+#  Watches incubators, VC portfolios, and news for new neuro / gene-therapy /
+#  gene-editing companies in the Boston biotech ecosystem.
+# ════════════════════════════════════════════════════════════════════════════
+
+# ── Focus areas ───────────────────────────────────────────────────────────────
+# A company is flagged if its homepage / description hits these. Two or more
+# hits (or two areas) = high confidence; a single hit = low confidence (flagged).
+focus_keywords:
+  neuroscience:
+    - neuroscience
+    - neurology
+    - neurological
+    - neurodegenerative
+    - neurodegeneration
+    - CNS
+    - central nervous system
+    - brain
+    - neuronal
+    - neuron
+    - synaptic
+    - Alzheimer
+    - Parkinson
+    - ALS
+    - Huntington
+    - epilepsy
+    - frontotemporal
+    - motor neuron
+    - glioblastoma
+    - neuropsychiatric
+    - neuromuscular
+    - neuroimmunology
+    - psychiatry
+    - psychiatric
+    - neurodevelopmental
+    - neuroinflammation
+    - neuroinflammatory
+    - tauopathy
+    - amyotrophic lateral sclerosis
+    - spinal muscular atrophy
+    - SMA
+    - multiple sclerosis
+    - astrocyte
+    - microglia
+    - oligodendrocyte
+    - blood-brain barrier
+    - BBB
+    - Rett
+    - Dravet
+    - fragile X
+    - Friedreich
+
+  gene_therapy:
+    - gene therapy
+    - gene therapies
+    - AAV
+    - adeno-associated virus
+    - viral vector
+    - lentiviral
+    - gene delivery
+    - genetic medicine
+    - genetic medicines
+    - in vivo gene
+    - rare genetic
+    - monogenic
+    - AAV9
+    - AAV capsid
+    - serotype
+    - delivery vehicle
+    - LNP
+    - lipid nanoparticle
+    - mRNA
+    - siRNA
+    - antisense
+    - ASO
+    - RNAi
+    - oligonucleotide
+
+  gene_editing:
+    - gene editing
+    - genome editing
+    - CRISPR
+    - base editing
+    - prime editing
+    - Cas9
+    - Cas12
+    - epigenetic editing
+    - epigenome editing
+    - zinc finger
+    - TALEN
+    - homology directed repair
+    - DNA repair
+    - genetic
+    - CRISPR-Cas
+    - Cas13
+    - dCas9
+    - nuclease
+    - knock-in
+    - knock-out
+    - HDR
+
+# ── Sources ───────────────────────────────────────────────────────────────────
+sources:
+
+  # ── Incubators: resident / member company lists (rendered & diffed) ─────────
+  incubators:
+    - name: LabCentral Residents
+      type: incubator
+      url: https://www.labcentral.org/about/our-resident-network
+
+    - name: LabCentral Alumni
+      type: incubator
+      url: https://www.labcentral.org/residents-and-partners/our-alumni-network
+
+    - name: Alexandria LaunchLabs (Cambridge)
+      type: incubator
+      url: https://www.alexandrialaunchlabs.com/locations/cambridge/
+
+    - name: BioLabs (Boston/Cambridge)
+      type: incubator
+      url: https://biolabs.io/locations
+
+    - name: SmartLabs
+      type: incubator
+      url: https://www.smartlabs.com/
+
+    - name: Nest.Bio Labs
+      type: incubator
+      url: https://www.nest.bio/
+
+    - name: Labshares Newton
+      type: incubator
+      url: https://www.labshares.com/
+
+    - name: Mission BioCapital Shared Labs
+      type: incubator
+      url: https://www.missionbiocapital.com/shared-labs/
+
+    - name: Bayer Co.Lab Cambridge
+      type: incubator
+      url: https://www.labcentral.org/labs-and-facilities/bayer-co-lab
+
+    - name: Portal Innovations Boston
+      type: incubator
+      url: https://portalinnovations.com/locations/
+
+    - name: Greentown Labs
+      type: incubator
+      url: https://greentownlabs.com/members/
+
+  # ── VC portfolio pages (rendered & diffed) ──────────────────────────────────
+  vc_portfolios:
+    - name: Atlas Venture Portfolio
+      type: vc_portfolio
+      url: https://www.atlasventure.com/companies/
+
+    - name: Third Rock Ventures Portfolio
+      type: vc_portfolio
+      url: https://www.thirdrockventures.com/portfolio/
+
+    - name: Flagship Pioneering Companies
+      type: vc_portfolio
+      url: https://www.flagshippioneering.com/companies
+
+    - name: Polaris Partners Portfolio
+      type: vc_portfolio
+      url: https://www.polarispartners.com/portfolio/
+
+    - name: ARCH Venture Partners Portfolio
+      type: vc_portfolio
+      url: https://www.archventure.com/portfolio
+
+    - name: 5AM Ventures Portfolio
+      type: vc_portfolio
+      url: https://www.5amventures.com/portfolio/
+
+    - name: Longwood Fund Portfolio
+      type: vc_portfolio
+      url: https://www.longwoodfund.com/portfolio/
+
+    - name: RA Capital Portfolio
+      type: vc_portfolio
+      url: https://www.racap.com/venture/our-portfolio
+
+    - name: F-Prime Capital Portfolio
+      type: vc_portfolio
+      url: https://fprimecapital.com/portfolio/life-sciences/
+
+    - name: Bain Capital Life Sciences Portfolio
+      type: vc_portfolio
+      url: https://www.baincapitallifesciences.com/portfolio
+
+    - name: Versant Ventures Portfolio
+      type: vc_portfolio
+      url: https://www.versantventures.com/portfolio
+
+    - name: OrbiMed Portfolio
+      type: vc_portfolio
+      url: https://www.orbimed.com/portfolio/
+
+    - name: Northpond Ventures Portfolio
+      type: vc_portfolio
+      url: https://www.northpond.com/portfolio
+
+    - name: Cure Ventures Portfolio
+      type: vc_portfolio
+      url: https://www.cureventures.com/portfolio
+
+    - name: MPM BioImpact Portfolio
+      type: vc_portfolio
+      url: https://www.mpmbioimpact.com/companies/
+
+    - name: Vida Ventures Portfolio
+      type: vc_portfolio
+      url: https://www.vidaventures.com/portfolio/
+
+    - name: Frazier Life Sciences Portfolio
+      type: vc_portfolio
+      url: https://www.frazierhealthcare.com/life-sciences/portfolio/
+
+  # ── Free news wires (RSS, filtered for launch/funding signals) ──────────────
+  news_wires:
+    - name: BusinessWire Biotech
+      type: news_rss
+      url: https://feed.businesswire.com/rss/home/?rss=G1QFDERJXkJeEFpRWA%3D%3D
+
+    - name: GlobeNewswire Biotech
+      type: news_rss
+      url: https://www.globenewswire.com/RssFeed/subjectcode/22-Biotechnology/feedTitle/GlobeNewswire%20-%20Biotechnology
+
+    - name: Fierce Biotech (best-effort)
+      type: news_rss
+      url: https://www.fiercebiotech.com/rss/xml
+
+# ── News via your Gmail newsletters (IMAP) ──────────────────────────────────────
+# Create a Gmail label and filter your Endpoints / Fierce newsletters into it.
+news:
+  gmail_address: your_email@gmail.com
+  gmail_label: biotech-news
+
+# ── Email ───────────────────────────────────────────────────────────────────────
+email:
+  from: your_email@gmail.com
+  to: your_email@gmail.com
+  send_when_empty: false
